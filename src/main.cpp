@@ -91,13 +91,13 @@ int main()
     float wartosc;
     Node<float> *tmp_root=NULL;
     AVL_tree <float> tree;
-    for(int i=0; i<10000; i++)
+    for(int i=0; i<15; i++)
     {
         wartosc=rand()%3;
         tmp_root=tree.insert(tree.Getroot(),wartosc);
         tree.setRoot(tmp_root);
     }
-cout<< "s" <<endl;
+
         tree.display(tree.Getroot(),1);
 
 

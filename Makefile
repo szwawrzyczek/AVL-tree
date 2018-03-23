@@ -6,7 +6,7 @@ BUILD_PATH = build
 BIN_PATH = $(BUILD_PATH)/bin
 
 # executable # 
-BIN_NAME = Sterowanie_robotem
+BIN_NAME = AVL-tree
 
 # extensions #
 SRC_EXT = cpp
