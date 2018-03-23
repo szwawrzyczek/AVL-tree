@@ -97,7 +97,7 @@ int main()
         tmp_root=tree.insert(tree.Getroot(),wartosc);
         tree.setRoot(tmp_root);
     }
-
+cout<< "s" <<endl;
         tree.display(tree.Getroot(),1);
 
 
