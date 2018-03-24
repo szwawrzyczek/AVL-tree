@@ -37,7 +37,8 @@ public:
     Node<T>* Getroot(){return root;};
     void setRoot(Node<T>*tmp){root=tmp;};
     void display(Node<T>*,int);
-    int tree_height(Node<T> *tmp);
+    int tree_height(Node<T>*);
+    int height_difference(Node<T>*);
 };
 
 template <class T>
@@ -95,6 +96,15 @@ int AVL_tree<T>::tree_height(Node<T> *tmp)
         height=max_height+1;
     }
     return height;
+}
+
+template <class T>
+int AVL_tree<T>::height_difference(Node<T> *tmp)
+{
+    int left_height=tree_height(tmp->Getleft());
+    int right_height=tree_height(tmp->Getright());
+    int height_difference=left_height-right_height;
+    return height_difference;
 }
 
 /******************************************************************************/
