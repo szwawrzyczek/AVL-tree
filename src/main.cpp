@@ -21,7 +21,8 @@ public:
 	Node<T>* Getleft(){return left;};
     Node<T>* Getright(){return right;};
     void setLeft(Node<T>*tmp){left=tmp;};
-    void setRight(Node<T>*tmp){right=tmp;};   
+    void setRight(Node<T>*tmp){right=tmp;};
+
 };
 
 template <class T>
@@ -39,6 +40,7 @@ public:
     void display(Node<T>*,int);
     int tree_height(Node<T>*);
     int height_difference(Node<T>*);
+    Node<T>* rotation_RR(Node*<T>);  
 };
 
 template <class T>
@@ -105,6 +107,16 @@ int AVL_tree<T>::height_difference(Node<T> *tmp)
     int right_height=tree_height(tmp->Getright());
     int height_difference=left_height-right_height;
     return height_difference;
+}
+
+template <class T>
+int AVL_tree<T>::rotation_RR(Node<T> *parent)
+{
+    avl_node *tmp=NULL;
+    tmp = parent->Getright();
+    parent->setRight(tmp->Getleft());
+    tmp->setLeft(parent);
+    return tmp;   // return "new parent"
 }
 
 /******************************************************************************/
