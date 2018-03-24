@@ -94,7 +94,7 @@ int AVL_tree<T>::tree_height(Node<T> *tmp)
         int max_height=max(left_height,right_height);
         height=max_height+1;
     }
-    return height-1;
+    return height;
 }
 
 /******************************************************************************/
