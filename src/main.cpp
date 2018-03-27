@@ -45,7 +45,10 @@ public:
     Node<T>* LR_rotation(Node<T>*);
     Node<T>* RL_rotation(Node<T>*);
     Node<T>* tree_balance(Node<T>*);
-    Node<T>* Remove(Node<T>*,T);    
+    Node<T>* Remove(Node<T>*,T);   
+    void Inorder(Node<T>*);
+    void Preorder(Node<T>*); 
+    void Postorder(Node<T>*);  
 
 };
 
@@ -234,6 +237,37 @@ Node<T>* AVL_tree<T>::Remove(Node<T> *parent,T key)
         return parent;
     return tree_balance(parent); 
 }
+
+template <class T>
+void AVL_tree<T>::Preorder(Node<T> *parent)
+{
+    if (parent==NULL)
+        return;
+    cout<<"  "<<parent->GiveValue()<<endl;
+    Preorder(parent->Getleft());
+    Preorder(parent->Getright());
+}
+
+template <class T>
+void AVL_tree<T>::Inorder(Node<T> *parent)
+{
+    if (parent==NULL)
+        return;
+    Inorder(parent->Getleft());
+    cout<<"  "<<parent->GiveValue()<<endl;
+    Inorder(parent->Getright());
+}
+
+template <class T>
+void AVL_tree<T>::Postorder(Node<T> *parent)
+{
+    if (parent==NULL)
+        return;
+    Postorder(parent->Getleft());
+    Postorder(parent->Getright());
+    cout<<"  "<<parent->GiveValue()<<endl;
+}
+
 /******************************************************************************/
 int main()
 {   
@@ -245,9 +279,11 @@ int main()
     cout<<endl<<endl<<"AVL tree program options"<<endl<<endl;  
     do
     {
-        cout<<"1.   Insert           4.   Random tree        "<<endl;
-        cout<<"2.   Remove           5.   Display tree height"<<endl;
-        cout<<"3.   Dispaly          6.   Exit               "<<endl;
+        cout<<"1.   Insert           6.   Display tree height"<<endl;
+        cout<<"2.   Remove           7.   Preorder display   "<<endl;
+        cout<<"3.   Display          8.   Inorder display    "<<endl;
+        cout<<"4.   Random tree      9.   Postorder display  "<<endl;
+        cout<<"5.   Exit                                     "<<endl;
         cin>>choice;
         switch(choice)
         {
@@ -276,7 +312,7 @@ int main()
             break;
 
         case 4:
-            for(int i=0; i<15; i++) 
+            for(int i=0; i<9; i++) 
             {
                 value=rand()%101;          
                 tmp_root=tree.Insert(tree.Getroot(),value);
@@ -284,14 +320,38 @@ int main()
             }
             break;
 
-        case 5:
+        case 5:     //Exit
+            break;             
+
+        case 6:
             cout<<endl<<"Height of tree....... ";
             cout<<tree.tree_height(tree.Getroot())<<endl<<endl;
             break;
 
-        case 6:     //Exit
-            break;                         
-            
+        case 7:
+            if (tree.Getroot()!=NULL)
+                tree.Preorder(tree.Getroot());
+            else
+                cout<<"AVL TREE is empty!!! "<<endl;
+            cout<<endl;
+            break;
+
+        case 8:
+            if (tree.Getroot()!=NULL)
+                tree.Inorder(tree.Getroot());
+            else
+                cout<<"AVL TREE is empty!!! "<<endl;
+            cout<<endl;
+            break;
+
+        case 9:
+            if (tree.Getroot()!=NULL)
+                tree.Postorder(tree.Getroot());
+            else
+                cout<<"AVL TREE is empty!!! "<<endl;
+            cout<<endl;
+            break;
+          
         default:
             cout<<endl<<"Invalid input value."; 
             cout<<"Enter value from one to six"<<endl;
@@ -299,7 +359,7 @@ int main()
             break;
         }
     }  
-    while(choice!=6);
+    while(choice!=5);
 
 return 0;
 }
