@@ -64,11 +64,15 @@ Node<T>* AVL_tree<T>::Insert(Node<T> *parent,T value)
         parent->setLeft(tmp);
         parent = tree_balance(parent);
     }
-    else if(value >= parent->GiveValue())
+    else if(value > parent->GiveValue())
     {
         tmp=Insert(parent->Getright(),value);
         parent->setRight(tmp);
         parent = tree_balance(parent);       
+    }
+    else    //security of AVL tree properties 
+    {
+        cout<<"This value already exist"<<endl;
     }
 return parent;
 }
@@ -144,7 +148,6 @@ Node<T>* AVL_tree<T>::R_rotation(Node<T> *parent)
 template <class T>
 Node<T>* AVL_tree<T>::LR_rotation(Node<T> *parent)
 {
-    cout<<"LR ROtation"<<endl;
     Node<T>*tmp;
     tmp = parent->Getleft();
     parent->setLeft(L_rotation(tmp));
@@ -155,7 +158,6 @@ Node<T>* AVL_tree<T>::LR_rotation(Node<T> *parent)
 template <class T>
 Node<T>* AVL_tree<T>::RL_rotation(Node<T> *parent)
 {
-    cout<<"RL ROtation"<<endl;
     Node<T>*tmp;
     tmp = parent->Getright();
     parent->setRight(R_rotation(tmp));
@@ -220,8 +222,8 @@ Node<T>* AVL_tree<T>::Remove(Node<T> *parent,T key)
             tmp=parent->Getleft() ? parent->Getleft():parent->Getright();
             if (tmp != NULL)    //One child
                 *parent=*tmp;
-            else 
-            {             //No child
+            else                //No child
+            {             
                 tmp=parent;
                 parent=NULL;
             }
@@ -236,40 +238,68 @@ Node<T>* AVL_tree<T>::Remove(Node<T> *parent,T key)
 int main()
 {   
     srand( time( NULL ) );
-    float wartosc;
+    float value;
+    int choice;
     Node<float> *tmp_root=NULL;
     AVL_tree <float> tree;
-/*
-   cin>>wartosc;
-        while(wartosc>-1)
-        {
-            tmp_root=tree.Insert(tree.Getroot(),wartosc);
-            tree.setRoot(tmp_root);
-            tree.display(tree.Getroot(),1);
-            cin>>wartosc;
-        }*/
-    
-    for(int i=0; i<5; i++)      //testowanie
+    cout<<endl<<endl<<"AVL tree program options"<<endl<<endl;  
+    do
     {
-        wartosc=rand()%95;          
-        tmp_root=tree.Insert(tree.Getroot(),wartosc);
-        tree.setRoot(tmp_root);
-    }
-        tree.display(tree.Getroot(),1);
-        cout<<"wysokosc avl tree= "<<tree.tree_height(tree.Getroot())<<endl;
-        cin>>wartosc;
-        while(wartosc>-1)
+        cout<<"1.   Insert           4.   Random tree        "<<endl;
+        cout<<"2.   Remove           5.   Display tree height"<<endl;
+        cout<<"3.   Dispaly          6.   Exit               "<<endl;
+        cin>>choice;
+        switch(choice)
         {
-            tree.setRoot(tree.Remove(tree.Getroot(),wartosc));
+        case 1:
+            cout<<endl<<"Enter a value to insert:   ";
+            cin>>value;
+            cout<<endl;
+            tmp_root=tree.Insert(tree.Getroot(),value);
+            tree.setRoot(tmp_root);
+            break;
+           
+        case 2:
+            cout<<endl<<"Enter a value to remove:   ";
+            cin>>value;
+            cout<<endl;
+            tree.setRoot(tree.Remove(tree.Getroot(),value));
+
+            break;
+           
+        case 3:
             if (tree.Getroot()!=NULL)
-            tree.display(tree.Getroot(),1);
+                tree.display(tree.Getroot(),1);
             else
-            cout<<"AVL TREE is empty!!! "<<endl;
-            cin>>wartosc;
+                cout<<"AVL TREE is empty!!! "<<endl;
+            cout<<endl;
+            break;
+
+        case 4:
+            for(int i=0; i<15; i++) 
+            {
+                value=rand()%101;          
+                tmp_root=tree.Insert(tree.Getroot(),value);
+                tree.setRoot(tmp_root);
+            }
+            break;
+
+        case 5:
+            cout<<endl<<"Height of tree....... ";
+            cout<<tree.tree_height(tree.Getroot())<<endl<<endl;
+            break;
+
+        case 6:     //Exit
+            break;                         
+            
+        default:
+            cout<<endl<<"Invalid input value."; 
+            cout<<"Enter value from one to six"<<endl;
+
+            break;
         }
-
-
-
+    }  
+    while(choice!=6);
 
 return 0;
 }
