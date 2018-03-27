@@ -43,12 +43,14 @@ public:
     Node<T>* rotation_RR(Node<T>*);
     Node<T>* rotation_LL(Node<T>*);
     Node<T>* rotation_LR(Node<T>*);
-    Node<T>* rotation_RL(Node<T>*);      
+    Node<T>* rotation_RL(Node<T>*);
+    Node<T>* tree_balance(Node<T>*);    
+
 };
 
 template <class T>
 Node<T>* AVL_tree<T>::insert(Node<T> *parent,T value)
-{
+{ 
     Node <T> *tmp=NULL;         /*wskaźnik pomocniczy*/
 	if(parent==NULL) 
 	{
@@ -59,11 +61,13 @@ Node<T>* AVL_tree<T>::insert(Node<T> *parent,T value)
     {
         tmp=insert(parent->Getleft(),value);
         parent->setLeft(tmp);
+        parent = tree_balance(parent);
     }
     else if(value >= parent->GiveValue())
     {
         tmp=insert(parent->Getright(),value);
         parent->setRight(tmp);
+        parent = tree_balance(parent);       
     }
 return parent;
 }
@@ -115,7 +119,7 @@ int AVL_tree<T>::height_difference(Node<T> *tmp)
 template <class T>
 Node<T>* AVL_tree<T>::rotation_RR(Node<T> *parent)
 {
-    Node<T>*tmp=NULL;
+    Node<T>*tmp;
     tmp = parent->Getright();
     parent->setRight(tmp->Getleft());
     tmp->setLeft(parent);
@@ -125,17 +129,17 @@ Node<T>* AVL_tree<T>::rotation_RR(Node<T> *parent)
 template <class T>
 Node<T>* AVL_tree<T>::rotation_LL(Node<T> *parent)
 {
-    Node<T>*tmp=NULL;
+    Node<T>*tmp;
     tmp = parent->Getleft();
     parent->setLeft(tmp->Getright());
-    tmp->setReft(parent);
+    tmp->setRight(parent);
     return tmp;   // return "new parent"
 }
 
 template <class T>
 Node<T>* AVL_tree<T>::rotation_LR(Node<T> *parent)
 {
-    Node<T>*tmp=NULL;
+    Node<T>*tmp;
     tmp = parent->Getleft();
     parent->setLeft(rotation_RR(tmp));
     return rotation_LL(parent);   // return "new parent"
@@ -144,11 +148,30 @@ Node<T>* AVL_tree<T>::rotation_LR(Node<T> *parent)
 template <class T>
 Node<T>* AVL_tree<T>::rotation_RL(Node<T> *parent)
 {
-    Node<T>*tmp=NULL;
+    Node<T>*tmp;
     tmp = parent->Getright();
     parent->setRight(rotation_LL(tmp));
-    tmp->setLeft(parent);
     return rotation_RR(parent);   // return "new parent"
+}
+template <class T>
+Node<T>* AVL_tree<T>::tree_balance(Node<T> *tmp)
+{
+    int balance_factor = height_difference(tmp);
+    if(balance_factor > 1)
+    {
+        if(height_difference(tmp->Getleft()) > 0)
+            tmp = rotation_LL(tmp);
+        else
+            tmp = rotation_LR(tmp);
+    }
+    else if (balance_factor < -1)
+    {
+        if(height_difference(tmp->Getright()) > 0)
+            tmp = rotation_RL(tmp);
+        else
+            tmp = rotation_RR(tmp);
+    }
+    return tmp;  
 }
 
 
@@ -159,13 +182,12 @@ int main()
     float wartosc;
     Node<float> *tmp_root=NULL;
     AVL_tree <float> tree;
-    for(int i=0; i<9; i++)      //testowanie
+    for(int i=0; i<30; i++)      //testowanie
     {
-        wartosc=rand()%51;          
+        wartosc=rand()%137;          
         tmp_root=tree.insert(tree.Getroot(),wartosc);
         tree.setRoot(tmp_root);
     }
-
         tree.display(tree.Getroot(),1);
         cout<<"wysokosc avl tree= "<<tree.tree_height(tree.Getroot())<<endl;
 
